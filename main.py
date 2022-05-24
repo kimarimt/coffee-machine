@@ -1,4 +1,6 @@
 from prettytable import PrettyTable
+import os 
+import time
 
 
 DRINKS = {
@@ -37,6 +39,11 @@ COFFEE_MACHINE = {
 }
 
 
+def clear(secs=0):
+    time.sleep(secs)
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+
 def get_menu():
     menu = PrettyTable()
     menu.field_names = ['Hot Drinks', 'Price']
@@ -70,7 +77,7 @@ def collect_money(drink):
     cost = drink['price']
 
     while True:
-        print(f'\nYour total is: ${cost:.2f}\n')
+        print(f'Your total is: ${cost:.2f}')
         try:
             quarters = int(input('Enter quarters: ')) * 0.25
             dimes = int(input('Enter dimes: ')) * 0.10
@@ -89,7 +96,9 @@ def collect_money(drink):
                 COFFEE_MACHINE['profit'] += cost
                 return change
         except ValueError:
-            print('\nPlease enter a number for each coin')
+            clear()
+            print('Please enter a number for each coin')
+            clear(1)
             continue
 
 
@@ -111,22 +120,31 @@ def main():
 
         choice = input('Which drink would you like? ').lower()
         if choice not in DRINKS.keys():
+            clear()
             print('Please enter a drink from one of the choices on the menu')
+            clear(1)
             continue
 
         drink = DRINKS[choice]
+        clear()
 
         if has_enough_resources(drink):
             change = collect_money(drink)
+            clear(1)
 
             if change != 0:
                 print(f'Here\'s your change: ${change:.2f}')
 
             dispense(drink)
             print(f'Here\'s your {choice} ☕️. Enjoy!')
+            clear(1)
         else:
+            clear()
             print('Please check machine for enough resources')
+            clear(1)
             continue
+
+
 
 
 if __name__ == '__main__':
