@@ -86,7 +86,9 @@ def collect_money(drink):
             amount = quarters + dimes + nickels + pennies
 
             if amount < drink['price']:
+                clear()
                 print('Sorry not enough money! Please try again')
+                clear(1)
                 continue
             else:
                 change = 0
