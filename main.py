@@ -1,5 +1,5 @@
 from prettytable import PrettyTable
-import os 
+import os
 import time
 
 
@@ -120,6 +120,7 @@ def check_resources():
     print(f'\tPROFIT: ${COFFEE_MACHINE["profit"]:.2f}')
     print('============================')
 
+
 def main():
     menu = get_menu()
 
@@ -142,8 +143,7 @@ def main():
             print('Please enter a drink from one of the choices on the menu')
             clear(1)
             continue
-        
-            
+
         drink = DRINKS[choice]
         clear()
 
@@ -162,8 +162,6 @@ def main():
             print('Please check machine for enough resources')
             clear(1)
             continue
-
-
 
 
 if __name__ == '__main__':
