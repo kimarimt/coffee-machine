@@ -112,6 +112,14 @@ def dispense(drink):
         machine_ingredients[ingredient] -= drink_ingredients[ingredient]
 
 
+def check_resources():
+    print('====== COFFEE MACHINE ======')
+    for ingredient, amount in COFFEE_MACHINE['ingredients'].items():
+        unit = 'g' if ingredient == 'milk' else 'ml'
+        print(f'\t{ingredient.upper()}: {amount}{unit}')
+    print(f'\tPROFIT: ${COFFEE_MACHINE["profit"]:.2f}')
+    print('============================')
+
 def main():
     menu = get_menu()
 
@@ -119,12 +127,23 @@ def main():
         print(f'\n{menu}\n')
 
         choice = input('Which drink would you like? ').lower()
-        if choice not in DRINKS.keys():
+        if choice == 'check':
+            clear()
+            check_resources()
+            clear(1)
+            continue
+        elif choice == 'quit':
+            clear()
+            print('Thanks for using the Python Coffee Machine')
+            clear(1)
+            break
+        elif choice not in DRINKS.keys():
             clear()
             print('Please enter a drink from one of the choices on the menu')
             clear(1)
             continue
-
+        
+            
         drink = DRINKS[choice]
         clear()
 
