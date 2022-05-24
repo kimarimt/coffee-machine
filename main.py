@@ -27,6 +27,15 @@ DRINKS = {
     }
 }
 
+COFFEE_MACHINE = {
+    'ingredients': {
+        'water': 300,
+        'coffee': 100,
+        'milk': 200
+    },
+    'profit': 0
+}
+
 
 def get_menu():
     menu = PrettyTable()
@@ -43,10 +52,35 @@ def get_menu():
     return menu
 
 
+def has_enough_resources(drink):
+    machine_ingredients = COFFEE_MACHINE['ingredients']
+    drink_ingredients = drink['ingredients']
+
+    for ingredient, amount in machine_ingredients.items():
+        if 'milk' not in drink_ingredients:
+            continue
+        else:
+            if drink_ingredients[ingredient] > amount:
+                return False
+
+    return True
+
+
 def main():
     menu = get_menu()
 
-    print(f'\n{menu}\n')
+    while True:
+        print(f'\n{menu}\n')
+
+        choice = input('Which drink would you like? ').lower()
+        drink = DRINKS[choice]
+
+        if has_enough_resources(drink):
+            print(f'Your total is: {drink["price"]:.2f}')
+        else:
+            print('Not enough resources')
+
+        break
 
 
 if __name__ == '__main__':
