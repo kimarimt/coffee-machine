@@ -66,6 +66,43 @@ def has_enough_resources(drink):
     return True
 
 
+def collect_money(drink):
+    cost = drink['price']
+
+    while True:
+        print(f'\nYour total is: ${cost:.2f}\n')
+        try:
+            quarters = int(input('Enter quarters: ')) * 0.25
+            dimes = int(input('Enter dimes: ')) * 0.10
+            nickels = int(input('Enter nickels: ')) * 0.05
+            pennies = int(input('Enter pennies: ')) * 0.01
+            amount = quarters + dimes + nickels + pennies
+
+            if amount < drink['price']:
+                print('Sorry not enough money! Please try again')
+                continue
+            else:
+                change = 0
+                if amount > cost:
+                    change = amount - cost
+
+                COFFEE_MACHINE['profit'] += cost
+                return change
+        except ValueError:
+            print('\nPlease enter a number for each coin')
+            continue
+
+
+def dispense(drink):
+    machine_ingredients = COFFEE_MACHINE['ingredients']
+    drink_ingredients = drink['ingredients']
+
+    for ingredient in machine_ingredients.keys():
+        if ingredient not in drink_ingredients:
+            continue
+        machine_ingredients[ingredient] -= drink_ingredients[ingredient]
+
+
 def main():
     menu = get_menu()
 
@@ -73,14 +110,23 @@ def main():
         print(f'\n{menu}\n')
 
         choice = input('Which drink would you like? ').lower()
+        if choice not in DRINKS.keys():
+            print('Please enter a drink from one of the choices on the menu')
+            continue
+
         drink = DRINKS[choice]
 
         if has_enough_resources(drink):
-            print(f'Your total is: {drink["price"]:.2f}')
-        else:
-            print('Not enough resources')
+            change = collect_money(drink)
 
-        break
+            if change != 0:
+                print(f'Here\'s your change: ${change:.2f}')
+
+            dispense(drink)
+            print(f'Here\'s your {choice} ☕️. Enjoy!')
+        else:
+            print('Please check machine for enough resources')
+            continue
 
 
 if __name__ == '__main__':
